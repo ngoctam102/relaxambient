@@ -92,7 +92,7 @@ export default function Page() {
                       onClick={() => handlePlay(sound.audio, sound.video)}
                       className="bg-white/80 rounded-lg overflow-hidden shadow-md cursor-pointer hover:scale-105 transition"
                     >
-                      <img
+                      <Image
                         src={sound.thumb}
                         alt={sound.title}
                         className="w-full aspect-[16/9] object-cover rounded-md"
