@@ -1,0 +1,25 @@
+@import "tailwindcss";
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: sans-serif;
+  background-color: #000;
+}
+
+button {
+  cursor: pointer;
+}
+
+.ad-placeholder {
+  width: 300px;
+  height: 250px;
+  background: #ccc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #555;
+  font-size: 14px;
+  border-radius: 8px;
+}
