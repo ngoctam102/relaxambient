@@ -92,11 +92,15 @@ export default function Page() {
                       onClick={() => handlePlay(sound.audio, sound.video)}
                       className="bg-white/80 rounded-lg overflow-hidden shadow-md cursor-pointer hover:scale-105 transition"
                     >
-                      <Image
-                        src={sound.thumb}
-                        alt={sound.title}
-                        className="w-full aspect-[16/9] object-cover rounded-md"
-                      />
+                      <div className="relative w-full" style={{ paddingTop: '56.25%' /* 9/16*100 */ }}>
+                        <Image
+                          src={sound.thumb}
+                          alt={sound.title}
+                          fill
+                          style={{ objectFit: 'cover' }}
+                          className="rounded-md"
+                        />
+                      </div>
                       <div className="p-2 text-center font-semibold">{sound.title}</div>
                     </button>
                   ))}
