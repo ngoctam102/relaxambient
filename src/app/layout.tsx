@@ -39,6 +39,8 @@ export default function RootLayout({
           href="/thumbnails/landing_page_image.webp"
         >
         </link>
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1407887553123641"
+        crossOrigin="anonymous"></script>
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
