@@ -3,15 +3,8 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Script from "next/script";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
+const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://relaxambient.com"),
@@ -23,9 +16,7 @@ export const metadata: Metadata = {
     "Relax Ambient offers soothing nature sounds and ambient music to help you relax, meditate, focus, and sleep better. Play your favorite soundscape instantly.",
   keywords:
     "nature sounds, relaxing ambient music, meditation sounds, sleep sounds, focus music, ambient soundscape",
-  alternates: {
-    canonical: "https://relaxambient.com",
-  },
+  alternates: { canonical: "https://relaxambient.com" },
   openGraph: {
     type: "website",
     url: "https://relaxambient.com",
@@ -45,8 +36,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Relax Ambient – Nature Sounds & Relaxing Music",
-    description:
-      "Ambient & nature sounds for sleep, focus and calm.",
+    description: "Ambient & nature sounds for sleep, focus and calm.",
     images: ["/android-chrome-512x512.png"],
   },
   robots: {
@@ -55,7 +45,7 @@ export const metadata: Metadata = {
     googleBot: {
       index: true,
       follow: true,
-      ...( { maxImagePreview: "large" } as any ),
+      // ❌ bỏ maxImagePreview ở đây để tránh lỗi type
       maxSnippet: -1,
       maxVideoPreview: -1,
     },
@@ -72,30 +62,35 @@ export const metadata: Metadata = {
   manifest: "/site.webmanifest",
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{ children: React.ReactNode }>) {
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
       <head>
         {/* Preload hero image */}
-        <link
-          rel="preload"
-          as="image"
-          href="/thumbnails/landing_page_image.webp"
+        <link rel="preload" as="image" href="/thumbnails/landing_page_image.webp" />
+
+        {/* ✅ Robots meta viết tay để có max-image-preview */}
+        <meta
+          name="robots"
+          content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
         />
-        {/* Google AdSense */}
+        <meta
+          name="googlebot"
+          content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
+        />
+
+        {/* Google AdSense (external) */}
         <script
           async
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1407887553123641"
           crossOrigin="anonymous"
         ></script>
-
-        
       </head>
+
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        {/* Organization JSON-LD */}
+        {/* JSON-LD (inline) – nhớ có id để khỏi lỗi @next/next/inline-script-id */}
         <Script
+          id="org-jsonld"
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
@@ -107,6 +102,7 @@ export default function RootLayout({
             }),
           }}
         />
+
         {/* Accessibility skip link */}
         <a href="#main" className="sr-only focus:not-sr-only">
           Skip to content
