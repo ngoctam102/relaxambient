@@ -45,9 +45,8 @@ export const metadata: Metadata = {
     googleBot: {
       index: true,
       follow: true,
-      // ❌ bỏ maxImagePreview ở đây để tránh lỗi type
-      maxSnippet: -1,
-      maxVideoPreview: -1,
+      'max-snippet': -1,
+      'max-video-preview': -1,
     },
   },
   viewport: "width=device-width, initial-scale=1",
