@@ -65,10 +65,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html lang="en">
       <head>
-        {/* Preload hero image */}
-        <link rel="preload" as="image" href="/thumbnails/landing_page_image.webp" />
-
-        {/* ✅ Robots meta viết tay để có max-image-preview */}
+        {/* Robots meta viết tay để có max-image-preview */}
         <meta
           name="robots"
           content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
