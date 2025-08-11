@@ -26,7 +26,7 @@ export const metadata: Metadata = {
       "Listen to high-quality ambient and nature sounds for sleep, study, and relaxation.",
     images: [
       {
-        url: "/android-chrome-512x512.png",
+        url: "https://relaxambient.com/android-chrome-512x512.png",
         width: 1200,
         height: 630,
         alt: "Relax Ambient – nature sounds for relaxation",
@@ -37,7 +37,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Relax Ambient – Nature Sounds & Relaxing Music",
     description: "Ambient & nature sounds for sleep, focus and calm.",
-    images: ["/android-chrome-512x512.png"],
+    images: ["https://relaxambient.com/android-chrome-512x512.png"],
   },
   robots: {
     index: true,
