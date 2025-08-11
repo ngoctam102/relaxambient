@@ -100,7 +100,7 @@ export default function Page() {
           <div className="flex gap-4 flex-row-reverse items-center">
             <h1 className="font-bold text-2xl">RELAX AMBIENT</h1>
             <div id="logo" style={{ mixBlendMode: 'multiply' }}>
-              <Image src="/android-chrome-512x512.png" alt="Relax Ambient logo" width={56} height={56} className="rounded-lg" />
+              <Image loading="lazy" src="/android-chrome-512x512.png" alt="Relax Ambient logo" title="Relax Ambient Logo" width={56} height={56} className="rounded-lg" />
             </div>
           </div>
           <p className="italic text-center text-sm md:text-base">
@@ -138,7 +138,7 @@ export default function Page() {
               return (
                 <article key={item.id} className="w-full rounded-2xl overflow-hidden border border-gray-200 bg-white/90">
                   <div className="relative w-full h-36">
-                    <Image src={item.thumbSrc} alt={`${item.name} thumbnail`} fill className="object-cover" sizes="(max-width: 768px) 100vw, 33vw" />
+                    <Image loading="lazy" src={item.thumbSrc} alt={`${item.name} - ambient sound thumbnail`} title={`${item.name}`} fill className="object-cover" sizes="(max-width: 768px) 100vw, 33vw" />
                   </div>
                   <div className="p-3">
                     <h3 className="text-base font-semibold text-gray-900">{item.name}</h3>
