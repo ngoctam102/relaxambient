@@ -38,6 +38,30 @@ const SOUND_LIST: SoundItem[] = [
     thumbSrc: "/thumbnails/golden_coast_thumbnail.webp",
     tags: ["focus", "breathe", "nature"],
   },
+  {
+    id: "storm",
+    name: "The Storm",
+    audioSrc: "https://video.relaxambient.com/storm.m4a",
+    videoSrc: "https://video.relaxambient.com/storm.mp4",
+    thumbSrc: "/thumbnails/storm.webp",
+    tags: ["relax", "storm", "nature"],
+  },
+  {
+    id: "summer forest",
+    name: "Summer Forest",
+    audioSrc: "https://video.relaxambient.com/summer-forest.m4a",
+    videoSrc: "https://video.relaxambient.com/summer-forest.mp4",
+    thumbSrc: "/thumbnails/summer-forest.webp",
+    tags: ["breathe", "forest", "nature"],
+  },
+  {
+    id: "forest Stream & wildlife",
+    name: "Forest Stream & Wildlife",
+    audioSrc: "https://video.relaxambient.com/forest-stream.m4a",
+    videoSrc: "https://video.relaxambient.com/forest-stream.mp4",
+    thumbSrc: "/thumbnails/forest-stream.webp",
+    tags: ["breathe", "forest", "relax"],
+  },
 ];
 
 export default function Page() {
