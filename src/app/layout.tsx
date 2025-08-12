@@ -61,19 +61,6 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
         <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
         <link rel="manifest" href="/site.webmanifest" />
-        
-        {/* Open Graph */}
-        <meta property="og:title" content="Relax Ambient – Nature Sounds & Relaxing Music" />
-        <meta property="og:description" content="Listen to high-quality ambient sounds…" />
-        <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://relaxambient.com" />
-        <meta property="og:image" content="https://relaxambient.com/og_image.jpg" />
-        <meta property="og:image:width" content="1200" />
-        <meta property="og:image:height" content="630" />
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="Relax Ambient – Nature Sounds & Relaxing Music" />
-        <meta name="twitter:description" content="Ambient & nature sounds for sleep, focus and calm." />
-        <meta name="twitter:image" content="https://relaxambient.com/og_image.jpg" />
 
         {/* Robots meta viết tay để có max-image-preview */}
         <meta
