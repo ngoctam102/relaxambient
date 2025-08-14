@@ -88,7 +88,7 @@ export const posts: BlogPostItem[] = [
   {
     slug: "rain-sounds",
     title: String(rainMeta?.title ?? "Untitled"),
-    href: "/blog/campfire-sounds",
+    href: "/blog/rain-sounds",
     thumbnail: rainThumb,
     thumbnailAlt: rainThumbAlt,        
     thumbnailTitle: rainThumbTitle,   
