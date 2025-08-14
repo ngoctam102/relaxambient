@@ -23,3 +23,93 @@ button {
   font-size: 14px;
   border-radius: 8px;
 }
+
+/* Kiểu chữ đẹp cho nội dung MDX — KHÔNG dùng @apply để tránh lỗi Tailwind v4 */
+.mdx-content {
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 1100px; /* tương đương max-w-[1100px] */
+  min-width: 300px;
+}
+
+/* Heading */
+.mdx-content h1 {
+  font-size: 1.875rem; /* = text-3xl */
+  font-weight: 700;    /* = font-bold */
+  line-height: 1.25;   /* gần với leading-tight */
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+@media (min-width: 768px) { /* = md: */
+  .mdx-content h1 { font-size: 2.25rem; } /* = text-4xl */
+}
+
+.mdx-content h2 {
+  font-size: 1.5rem;   /* = text-2xl */
+  font-weight: 600;    /* = font-semibold */
+  margin-top: 2rem;    /* ~ mt-8 */
+  margin-bottom: 0.75rem; /* ~ mb-3 */
+}
+@media (min-width: 768px) {
+  .mdx-content h2 { font-size: 1.875rem; } /* = text-3xl */
+}
+
+.mdx-content h3 {
+  font-size: 1.25rem;  /* = text-xl */
+  font-weight: 600;    /* = font-semibold */
+  margin-top: 1.5rem;  /* ~ mt-6 */
+  margin-bottom: 0.5rem; /* ~ mb-2 */
+}
+
+/* Đoạn văn & list */
+.mdx-content p {
+  font-size: 15px;      /* = text-[15px] */
+  line-height: 1.75;    /* gần leading-7 */
+  color: rgb(31 41 55); /* = text-gray-800 */
+  margin: 1rem 0;       /* = my-4 */
+}
+@media (min-width: 768px) {
+  .mdx-content p { font-size: 1rem; } /* = md:text-base */
+}
+
+.mdx-content ul,
+.mdx-content ol {
+  margin: 1rem 0;   /* = my-4 */
+}
+
+.mdx-content li {
+  line-height: 1.75;    /* gần leading-7 */
+  color: rgb(31 41 55); /* text-gray-800 */
+}
+
+/* Liên kết */
+.mdx-content a {
+  color: rgb(37 99 235);           /* = text-blue-600 */
+  /* text-decoration: underline;     */
+  text-underline-offset: 0.25em;   /* = underline-offset-2 */
+}
+.mdx-content a:hover { opacity: .8; }
+
+/* Ảnh */
+.mdx-content img {
+  border-radius: 0.75rem; /* = rounded-xl */
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1); /* = shadow */
+  margin: 1rem 0; /* = my-4 */
+}
+
+/* Code inline & block */
+.mdx-content code {
+  font-size: 0.875rem;           /* = text-sm */
+  background-color: rgb(243 244 246); /* = bg-gray-100 */
+  padding: 0.125rem 0.375rem;    /* = px-1.5 py-0.5 */
+  border-radius: 0.25rem;        /* = rounded */
+}
+
+.mdx-content pre {
+  background-color: rgb(17 24 39); /* = bg-gray-900 */
+  color: rgb(243 244 246);         /* = text-gray-100 */
+  padding: 1rem;                   /* = p-4 */
+  border-radius: 0.75rem;          /* = rounded-xl */
+  overflow-x: auto;                /* = overflow-x-auto */
+  margin: 1rem 0;                  /* = my-4 */
+}

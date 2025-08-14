@@ -1,4 +1,10 @@
 import type { NextConfig } from "next";
+import createMDX from "@next/mdx";
+
+// Tạo MDX config
+const withMDX = createMDX({
+  extension: /\.mdx?$/,
+});
 
 const nextConfig: NextConfig = {
   /* config options here */
@@ -6,6 +12,7 @@ const nextConfig: NextConfig = {
    images: {
     unoptimized: true,
   },
+  pageExtensions: ["ts", "tsx", "md", "mdx"],
 };
 
-export default nextConfig;
+export default withMDX(nextConfig);

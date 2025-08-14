@@ -49,8 +49,9 @@ export const metadata: Metadata = {
       'max-video-preview': -1,
     },
   },
-  viewport: "width=device-width, initial-scale=1",
+  // viewport: "width=device-width, initial-scale=1",
 };
+export const viewport = { width: "device-width", initialScale: 1 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
@@ -97,7 +98,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         />
 
         {/* Accessibility skip link */}
-        <a href="#main" className="sr-only focus:not-sr-only">
+        <a href="#main" title="Skip to main content" className="sr-only focus:not-sr-only">
           Skip to content
         </a>
         {children}
