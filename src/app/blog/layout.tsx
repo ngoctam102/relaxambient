@@ -41,7 +41,15 @@ export default function BlogLayout({
 
       <footer className="mx-auto max-w-[1280px] px-3 md:px-6 pb-10">
         <div className="rounded-2xl bg-white/70 backdrop-blur p-3 text-center shadow">
-          Feedback: <i>phamtam102@gmail.com</i>
+          Feedback, suggestions and problems: <i>phamtam102@gmail.com</i>
+          <span className="mx-2 opacity-40">•</span>
+            <a href="/" title="Relax Ambient Home Page" className="underline underline-offset-4 hover:opacity-80">
+              Home
+            </a>
+            <span className="mx-2 opacity-40">•</span>
+            <a href="/sitemap.xml" title="site map" className="underline underline-offset-4 hover:opacity-80">
+              Sitemap
+            </a>
         </div>
       </footer>
     </div>
