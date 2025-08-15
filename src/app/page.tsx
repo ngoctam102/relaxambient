@@ -1,12 +1,43 @@
 "use client";
-import { useEffect, useState, useMemo, useRef, useCallback } from "react";
+import { useEffect, useState, useMemo, useRef, useCallback, Suspense } from "react";
 import Image from "next/image";
 import { SOUND_LIST, SoundItem } from "@/app/data/sounds";
 import { useRouter, useSearchParams } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 
+/** Component nhỏ chỉ để đọc query (?s=) và kích hoạt phát */
+function QuerySync({
+  currentId,
+  playItem,
+  router,
+  stoppingRef,
+}: {
+  currentId: string | null;
+  playItem: (item: SoundItem) => void;
+  router: ReturnType<typeof useRouter>;
+  stoppingRef: React.MutableRefObject<boolean>;
+}) {
+  const searchParams = useSearchParams();
+
+  useEffect(() => {
+    if (stoppingRef.current) return; // đang stop → bỏ qua
+
+    const s = searchParams.get("s");
+    if (!s) return;
+    if (currentId === s) return;
+
+    const item = SOUND_LIST.find((x) => x.id === s);
+    if (!item) {
+      router.replace("/", { scroll: false });
+      return;
+    }
+    playItem(item);
+  }, [searchParams, currentId, playItem, router, stoppingRef]);
+
+  return null;
+}
+
 function HomeInner() {
-  // ... (GIỮ NGUYÊN code hiện tại của bạn ở đây)
   const [currentAudio, setCurrentAudio] = useState<HTMLAudioElement | null>(null);
   const [currentId, setCurrentId] = useState<string | null>(null);
   const [backgroundVideo, setBackgroundVideo] = useState<string | null>(null);
@@ -15,7 +46,6 @@ function HomeInner() {
   const heroRef = useRef<HTMLDivElement | null>(null);
   const stoppingRef = useRef(false);
   const router = useRouter();
-  const searchParams = useSearchParams();
 
   const currentItem: SoundItem | undefined = useMemo(
     () => SOUND_LIST.find((s) => s.id === currentId),
@@ -23,40 +53,43 @@ function HomeInner() {
   );
 
   // Play item chịu trách nhiệm phát sound và cập nhật state
-  const playItem = useCallback(async (item: SoundItem) => {
-    // Dừng audio cũ
-    if (currentAudio) {
-      currentAudio.pause();
-      currentAudio.currentTime = 0;
-    }
-    // Tạo audio mới, phát, setState cho id,audio,video
-    const audio = new Audio(item.audioSrc);
-    audio.loop = true;
-    try {
-      await audio.play();
+  const playItem = useCallback(
+    async (item: SoundItem) => {
+      // Dừng audio cũ
+      if (currentAudio) {
+        currentAudio.pause();
+        currentAudio.currentTime = 0;
+      }
+      // Tạo audio mới, phát, setState cho id,audio,video
+      const audio = new Audio(item.audioSrc);
+      audio.loop = true;
+      try {
+        await audio.play();
 
-      setCurrentAudio(audio);
-      setCurrentId(item.id);
-      setBackgroundVideo(item.videoSrc);
+        setCurrentAudio(audio);
+        setCurrentId(item.id);
+        setBackgroundVideo(item.videoSrc);
 
-      setAutoplayFailed(false);
-      setManualPlaying(false);
-      console.log('Playing', item.name);
-    } catch (error) {
-      setCurrentId(item.id);
-      setBackgroundVideo(item.videoSrc);
-      console.warn('Unable autoplay', error);
-      setAutoplayFailed(true);
-      setManualPlaying(false);
-    }
-    
-    // Auto scroll khi màn hình có chiều không đủ sẽ scroll lên đầu trang để dễ nhìn thấy video.
-    if (typeof window !== "undefined" && window.matchMedia("(max-width: 1280px)").matches) {
-      requestAnimationFrame(() => {
-        window.scrollTo({ top: 0, behavior: "smooth" });
-      });
-    }
-  }, [currentAudio]);
+        setAutoplayFailed(false);
+        setManualPlaying(false);
+        console.log("Playing", item.name);
+      } catch (error) {
+        setCurrentId(item.id);
+        setBackgroundVideo(item.videoSrc);
+        console.warn("Unable autoplay", error);
+        setAutoplayFailed(true);
+        setManualPlaying(false);
+      }
+
+      // Auto scroll khi màn hình có chiều không đủ sẽ scroll lên đầu trang để dễ nhìn thấy video.
+      if (typeof window !== "undefined" && window.matchMedia("(max-width: 1280px)").matches) {
+        requestAnimationFrame(() => {
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        });
+      }
+    },
+    [currentAudio]
+  );
 
   // Handle Play gọi play item đồng thời điều chỉnh URL.
   const handlePlay = (item: SoundItem) => {
@@ -69,7 +102,7 @@ function HomeInner() {
     if (currentAudio) {
       currentAudio.pause();
       currentAudio.currentTime = 0;
-      currentAudio.src = '';
+      currentAudio.src = "";
     }
     setCurrentAudio(null);
     setCurrentId(null);
@@ -78,13 +111,15 @@ function HomeInner() {
     setAutoplayFailed(false);
     setManualPlaying(false);
 
-    stoppingRef.current = true; 
+    stoppingRef.current = true;
     // Đảm bảo xoá sạch url liên quan đến sound đó nếu bấm stop
     router.replace("/", { scroll: false });
-    setTimeout(() => { stoppingRef.current = false; }, 0);
+    setTimeout(() => {
+      stoppingRef.current = false;
+    }, 0);
   };
 
-  // Cần đảm bảo clean up các audio đang phát mỗi khi người dùng chọn phát audio mới 
+  // Clean up audio khi unmount
   useEffect(() => {
     return () => {
       if (currentAudio) {
@@ -94,34 +129,24 @@ function HomeInner() {
     };
   }, [currentAudio]);
 
-  // Khi người dùng vào từ url trỏ đến id của sound nào thì phát sound đó luôn.
-  useEffect(() => {
-    if (stoppingRef.current) return; // đang stop → bỏ qua
-
-    const s = searchParams.get("s");
-    if (!s) return;
-
-    if (currentId === s) return;
-
-    const item = SOUND_LIST.find(x => x.id === s);
-    if (!item) {
-      router.replace("/", { scroll: false });
-      return;
-    }
-    playItem(item);
-  }, [searchParams, currentId, playItem, router]);
-
   return (
     <div className="min-h-screen bg-gray-400 overflow-x-clip">
       <div className="w-full max-w-[1280px] mx-auto px-3 md:px-6 min-h-screen flex flex-col overflow-hidden">
-        
-        {/* Header (không lồng max-w khác nữa) */}
+        {/* Header */}
         <header className="shrink-0 mt-3">
           <div className="flex flex-col lg:flex-row items-center justify-between gap-2 rounded-2xl bg-white/70 backdrop-blur p-3 shadow">
             <div className="flex gap-4 flex-row-reverse items-center">
               <h1 className="font-bold text-2xl">RELAX AMBIENT</h1>
-              <div id="logo" style={{ mixBlendMode: 'multiply' }}>
-                <Image src="/android-chrome-56x56.png" alt="Relax Ambient logo" title="Relax Ambient Logo" width={56} height={56} className="rounded-lg" loading="lazy" />
+              <div id="logo" style={{ mixBlendMode: "multiply" }}>
+                <Image
+                  src="/android-chrome-56x56.png"
+                  alt="Relax Ambient logo"
+                  title="Relax Ambient Logo"
+                  width={56}
+                  height={56}
+                  className="rounded-lg"
+                  loading="lazy"
+                />
               </div>
             </div>
             <p className="italic text-center text-sm md:text-base">
@@ -130,30 +155,24 @@ function HomeInner() {
           </div>
         </header>
 
-        {/* HERO: chỉ render khi có video + slide in/out mượt */}
+        {/* HERO */}
         <AnimatePresence initial={false}>
           {backgroundVideo && (
             <motion.section
               key="hero"
               className="shrink-0 mt-5"
-              // Ẩn như kéo màn từ trên xuống
               initial={{ clipPath: "inset(0% 0% 100% 0%)", opacity: 0.6 }}
               animate={{ clipPath: "inset(0% 0% 0% 0%)", opacity: 1 }}
-              // Mất ngay lập tức khi Stop
               exit={{
                 clipPath: "inset(0% 0% 100% 0%)",
                 opacity: 0.8,
-                transition: { duration: 0.75, ease: [0.22, 1, 0.36, 1] }, // nhanh hơn chút
+                transition: { duration: 0.75, ease: [0.22, 1, 0.36, 1] },
               }}
-              transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }} // chậm & mượt (easeOutQuint-like)
-              style={{ willChange: "clip-path, opacity" }}              // hint tăng mượt
+              transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+              style={{ willChange: "clip-path, opacity" }}
             >
-              <div
-                className="relative h-[38vh] md:h-[44vh] rounded-2xl overflow-hidden"
-                ref={heroRef}
-              >
+              <div className="relative h-[38vh] md:h-[44vh] rounded-2xl overflow-hidden" ref={heroRef}>
                 <video
-                  rel="preconnect"
                   className="absolute inset-0 block w-full h-full object-cover object-center transform-gpu"
                   autoPlay
                   loop
@@ -167,13 +186,13 @@ function HomeInner() {
           )}
         </AnimatePresence>
 
-        {/* MAIN chiếm hết phần còn lại */}
+        {/* MAIN */}
         <main id="main" className="flex-1 flex flex-col mt-4 min-h-0 overflow-hidden">
           {autoplayFailed && !manualPlaying && (
             <button
               onClick={() => {
                 if (!currentId) return;
-                const item = SOUND_LIST.find(x => x.id === currentId);
+                const item = SOUND_LIST.find((x) => x.id === currentId);
                 if (!item) return;
 
                 const audio = new Audio(item.audioSrc);
@@ -183,7 +202,7 @@ function HomeInner() {
                   setCurrentId(item.id);
                   setBackgroundVideo(item.videoSrc);
                   setAutoplayFailed(false);
-                  setManualPlaying(true); // Bấm xong → hiện chữ Playing…
+                  setManualPlaying(true);
                 });
               }}
               className="mb-2 p-3 max-w-[120px] bg-black text-white font-semibold rounded-lg mx-auto"
@@ -196,6 +215,7 @@ function HomeInner() {
               Playing....
             </div>
           )}
+
           {/* intro ngắn */}
           <section className="mb-3 text-center max-w-2xl mx-auto">
             <p className="text-gray-800 font-semibold">
@@ -203,16 +223,18 @@ function HomeInner() {
             </p>
           </section>
 
-          {/* Panel grid: flex-1 + overflow-y-auto => list CAO hơn và chỉ panel cuộn */}
+          {/* Grid panel */}
           <section className="flex-1 overflow-y-auto min-h-0 rounded-2xl bg-white/75 backdrop-blur p-4 shadow">
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
               {SOUND_LIST.map((item, idx) => {
                 const isPlaying = currentId === item.id;
-                // Ảnh đầu tiên là ứng viên LCP (tuỳ viewport)
-                const isLcpCandidate = idx === 0;
+                const isLcpCandidate = idx === 0; // Ảnh đầu tiên: LCP candidate
 
                 return (
-                  <article key={item.id} className="w-full rounded-2xl overflow-hidden border border-gray-200 bg-white/90">
+                  <article
+                    key={item.id}
+                    className="w-full rounded-2xl overflow-hidden border border-gray-200 bg-white/90"
+                  >
                     <div className="relative w-full h-36">
                       <Image
                         src={item.thumbSrc}
@@ -232,17 +254,27 @@ function HomeInner() {
                       {item.tags && (
                         <div className="mt-1 flex flex-wrap gap-2 text-xs text-gray-600">
                           {item.tags.map((t) => (
-                            <span key={t} className="px-2 py-0.5 rounded-full bg-gray-100 border">{t}</span>
+                            <span key={t} className="px-2 py-0.5 rounded-full bg-gray-100 border">
+                              {t}
+                            </span>
                           ))}
                         </div>
                       )}
                       <div className="mt-3 flex items-center gap-3">
                         {!isPlaying ? (
-                          <button onClick={() => handlePlay(item)} className="px-4 py-2 rounded-xl bg-black text-white hover:scale-105 transition-all duration-400" aria-label={`Play ${item.name}`}>
+                          <button
+                            onClick={() => handlePlay(item)}
+                            className="px-4 py-2 rounded-xl bg-black text-white hover:scale-105 transition-all duration-400"
+                            aria-label={`Play ${item.name}`}
+                          >
                             Play
                           </button>
                         ) : (
-                          <button onClick={handleStop} className="px-4 py-2 rounded-xl bg-red-600 text-white hover:scale-105 transition-all duration-400" aria-label={`Stop ${item.name}`}>
+                          <button
+                            onClick={handleStop}
+                            className="px-4 py-2 rounded-xl bg-red-600 text-white hover:scale-105 transition-all duration-400"
+                            aria-label={`Stop ${item.name}`}
+                          >
                             Stop
                           </button>
                         )}
@@ -267,35 +299,54 @@ function HomeInner() {
           </section>
         </main>
 
-        {/* Footer auto dính đáy nhờ layout flex */}
+        {/* Footer */}
         <footer className="shrink-0 mt-4 mb-6">
           <div className="rounded-2xl bg-white/70 backdrop-blur p-3 text-center shadow">
             Feedback, suggestions and problems: <i>phamtam102@gmail.com</i>
             <span className="mx-2 opacity-40">•</span>
-            <a href="/blog" title="Read ambient sound blog posts" className="underline underline-offset-4 hover:opacity-80">Blog</a>
+            <a href="/blog" title="Read ambient sound blog posts" className="underline underline-offset-4 hover:opacity-80">
+              Blog
+            </a>
             <span className="mx-2 opacity-40">•</span>
-            <a href="/sitemap.xml" title="site map" className="underline underline-offset-4 hover:opacity-80">Sitemap</a>
+            <a href="/sitemap.xml" title="site map" className="underline underline-offset-4 hover:opacity-80">
+              Sitemap
+            </a>
           </div>
         </footer>
       </div>
 
-      {/* Mini player mobile vẫn giữ nguyên nếu cần */}
+      {/* Mini player mobile */}
       {currentItem && (
         <div className="fixed bottom-3 inset-x-3 z-20 md:hidden">
           <div className="bg-black/70 text-white rounded-2xl px-4 py-3 flex items-center justify-between shadow-lg">
             <div className="text-sm">
               <div className="font-semibold leading-tight">{currentItem.name}</div>
-              <div className="text-white/80 text-xs leading-tight truncate">{currentItem.tags?.join(' • ')}</div>
+              <div className="text-white/80 text-xs leading-tight truncate">
+                {currentItem.tags?.join(" • ")}
+              </div>
             </div>
-            <button onClick={handleStop} className="px-3 py-1.5 rounded-xl bg-red-500">Stop</button>
+            <button onClick={handleStop} className="px-3 py-1.5 rounded-xl bg-red-500">
+              Stop
+            </button>
           </div>
         </div>
       )}
+
+      {/* ✅ Chỉ bọc phần đọc searchParams bằng Suspense để thỏa yêu cầu Next,
+          đồng thời vẫn giữ UI/ảnh LCP được SSR đầy đủ */}
+      <Suspense fallback={null}>
+        <QuerySync
+          currentId={currentId}
+          playItem={playItem}
+          router={router}
+          stoppingRef={stoppingRef}
+        />
+      </Suspense>
     </div>
   );
 }
 
 export default function Page() {
-  // ❗ BỎ Suspense bọc toàn trang để ảnh discoverable ngay trong HTML initial
+  // Không bọc toàn trang bằng Suspense để LCP ảnh vẫn discoverable
   return <HomeInner />;
 }
