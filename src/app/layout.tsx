@@ -82,6 +82,19 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       </head>
 
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+         {/* ✅ Skip link đứng đầu body, trước Header/Nav */}
+        <a
+          href="#main"
+          className="
+            sr-only
+            focus:not-sr-only focus:fixed focus:top-3 focus:left-3
+            focus:px-4 focus:py-2
+            focus:bg-white focus:text-black
+            focus:rounded-xl focus:shadow
+            focus:outline-none focus:ring focus:ring-offset-2
+            z-[1000]
+          "
+        >Skip to main content</a>
         {/* JSON-LD (inline) – nhớ có id để khỏi lỗi @next/next/inline-script-id */}
         <Script
           id="org-jsonld"
@@ -98,9 +111,6 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         />
 
         {/* Accessibility skip link */}
-        <a href="#main" title="Skip to main content" className="sr-only focus:not-sr-only">
-          Skip to content
-        </a>
         {children}
       </body>
     </html>

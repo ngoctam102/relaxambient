@@ -168,7 +168,7 @@ function HomeInner() {
       </AnimatePresence>
 
       {/* MAIN chiếm hết phần còn lại */}
-      <main className="flex-1 flex flex-col mt-4 min-h-0 overflow-hidden">
+      <main id="main" className="flex-1 flex flex-col mt-4 min-h-0 overflow-hidden">
         {autoplayFailed && !manualPlaying && (
           <button
             onClick={() => {
@@ -214,7 +214,7 @@ function HomeInner() {
                     <Image loading="lazy" src={item.thumbSrc} alt={`${item.name} - ambient sound thumbnail`} title={`${item.name}`} fill className="object-cover" sizes="(max-width: 768px) 100vw, 33vw" />
                   </div>
                   <div className="p-3">
-                    <h3 className="text-base font-semibold text-gray-900">{item.name}</h3>
+                    <h2 className="text-base font-semibold text-gray-900">{item.name}</h2>
                     {item.tags && (
                       <div className="mt-1 flex flex-wrap gap-2 text-xs text-gray-600">
                         {item.tags.map((t) => (
