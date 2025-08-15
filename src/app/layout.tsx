@@ -45,11 +45,10 @@ export const metadata: Metadata = {
     googleBot: {
       index: true,
       follow: true,
-      'max-snippet': -1,
-      'max-video-preview': -1,
+      "max-snippet": -1,
+      "max-video-preview": -1,
     },
   },
-  // viewport: "width=device-width, initial-scale=1",
 };
 export const viewport = { width: "device-width", initialScale: 1 };
 
@@ -73,16 +72,15 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
         />
 
-        {/* Google AdSense (external) */}
-        <script
-          async
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1407887553123641"
-          crossOrigin="anonymous"
-        ></script>
+        {/* ✅ Preconnect cho AdSense để giảm độ trễ DNS+TLS (giữ tổng số preconnect ≤ 4) */}
+        <link rel="preconnect" href="https://pagead2.googlesyndication.com" crossOrigin="anonymous" />
+        <link rel="preconnect" href="https://googleads.g.doubleclick.net" crossOrigin="anonymous" />
+        <link rel="preconnect" href="https://tpc.googlesyndication.com" crossOrigin="anonymous" />
+        {/* Nếu media (audio/video) ở domain khác CDN, thêm 1 preconnect cho CDN đó tại đây */}
       </head>
 
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-         {/* ✅ Skip link đứng đầu body, trước Header/Nav */}
+        {/* ✅ Skip link đứng đầu body, trước Header/Nav */}
         <a
           href="#main"
           className="
@@ -94,7 +92,10 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
             focus:outline-none focus:ring focus:ring-offset-2
             z-[1000]
           "
-        >Skip to main content</a>
+        >
+          Skip to main content
+        </a>
+
         {/* JSON-LD (inline) – nhớ có id để khỏi lỗi @next/next/inline-script-id */}
         <Script
           id="org-jsonld"
@@ -110,8 +111,15 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           }}
         />
 
-        {/* Accessibility skip link */}
         {children}
+
+        {/* ✅ Chuyển AdSense sang next/script và tải sau khi trang sẵn sàng tương tác */}
+        <Script
+          async
+          strategy="afterInteractive"
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1407887553123641"
+          crossOrigin="anonymous"
+        />
       </body>
     </html>
   );
