@@ -14,7 +14,7 @@ export const SOUND_LIST: SoundItem[] = [
     name: "Campfire",
     audioSrc: "https://video.relaxambient.com/fire.m4a",
     videoSrc: "https://video.relaxambient.com/fire.mp4",
-    thumbSrc: "/thumbnails/fire_thumbnail.webp",
+    thumbSrc: "/thumbnails/resize/fire_thumbnail.webp",
     tags: ["relax", "warm", "nature"],
     slug: "campfire-sounds"
   },
@@ -23,7 +23,7 @@ export const SOUND_LIST: SoundItem[] = [
     name: "Rain on Leaves",
     audioSrc: "https://video.relaxambient.com/rain.m4a",
     videoSrc: "https://video.relaxambient.com/rain.mp4",
-    thumbSrc: "/thumbnails/rain.webp",
+    thumbSrc: "/thumbnails/resize/rain.webp",
     tags: ["sleep", "calm", "nature"],
     slug: "rain-sounds"
   },
@@ -32,7 +32,7 @@ export const SOUND_LIST: SoundItem[] = [
     name: "Ocean Waves",
     audioSrc: "https://video.relaxambient.com/coast.m4a",
     videoSrc: "https://video.relaxambient.com/coast.mp4",
-    thumbSrc: "/thumbnails/golden_coast_thumbnail.webp",
+    thumbSrc: "/thumbnails/resize/golden_coast_thumbnail.webp",
     tags: ["focus", "breathe", "nature"],
     slug: "ocean-waves"
   },
@@ -41,7 +41,7 @@ export const SOUND_LIST: SoundItem[] = [
     name: "The Storm",
     audioSrc: "https://video.relaxambient.com/storm.m4a",
     videoSrc: "https://video.relaxambient.com/storm.mp4",
-    thumbSrc: "/thumbnails/storm.webp",
+    thumbSrc: "/thumbnails/resize/storm.webp",
     tags: ["relax", "storm", "nature"],
     slug: "storm-sounds"
   },
@@ -50,7 +50,7 @@ export const SOUND_LIST: SoundItem[] = [
     name: "Summer Forest",
     audioSrc: "https://video.relaxambient.com/summer-forest.m4a",
     videoSrc: "https://video.relaxambient.com/summer-forest.mp4",
-    thumbSrc: "/thumbnails/summer-forest.webp",
+    thumbSrc: "/thumbnails/resize/summer-forest.webp",
     tags: ["breathe", "forest", "nature"],
     slug: "summer-forest-sounds"
   },
@@ -59,7 +59,7 @@ export const SOUND_LIST: SoundItem[] = [
     name: "Forest Stream & Wildlife",
     audioSrc: "https://video.relaxambient.com/forest-stream.m4a",
     videoSrc: "https://video.relaxambient.com/forest-stream.mp4",
-    thumbSrc: "/thumbnails/forest-stream.webp",
+    thumbSrc: "/thumbnails/resize/forest-stream.webp",
     tags: ["breathe", "forest", "relax"],
     slug: "forest-stream-wildlife"
   },
