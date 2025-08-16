@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import ShareBar from "@/components/ShareBar";
 import BackButton from "@/components/BackButton";
+import Link from "next/link";
 
 export const metadata: Metadata = {
   title: {
@@ -43,13 +44,13 @@ export default function BlogLayout({
         <div className="rounded-2xl bg-white/70 backdrop-blur p-3 text-center shadow">
           Feedback, suggestions and problems: <i>phamtam102@gmail.com</i>
           <span className="mx-2 opacity-40">•</span>
-            <a href="/" title="Relax Ambient Home Page" className="underline underline-offset-4 hover:opacity-80">
+            <Link href="/" title="Relax Ambient Home Page" className="underline underline-offset-4 hover:opacity-80">
               Home
-            </a>
+            </Link>
             <span className="mx-2 opacity-40">•</span>
-            <a href="/sitemap.xml" title="site map" className="underline underline-offset-4 hover:opacity-80">
+            <Link href="/sitemap.xml" title="site map" className="underline underline-offset-4 hover:opacity-80">
               Sitemap
-            </a>
+            </Link>
         </div>
       </footer>
     </div>
