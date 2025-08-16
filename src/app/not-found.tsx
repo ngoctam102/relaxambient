@@ -39,6 +39,7 @@ export default function NotFound() {
             <h2 className="text-3xl font-bold">404 — Page not found</h2>
             <Link
               href="/"
+              title="Back to home page"
               className="inline-block px-4 py-3 rounded-lg bg-black text-white hover:scale-110 transition-all duration-400"
             >
               Back to home page
@@ -51,21 +52,21 @@ export default function NotFound() {
           <div className="rounded-2xl bg-white/70 backdrop-blur p-3 text-center shadow">
             Feedback, suggestions and problems: <i>phamtam102@gmail.com</i>
             <span className="mx-2 opacity-40">•</span>
-            <a
+            <Link
               href="/blog"
               title="Read ambient sound blog posts"
               className="underline underline-offset-4 hover:opacity-80"
             >
               Blog
-            </a>
+            </Link>
             <span className="mx-2 opacity-40">•</span>
-            <a
+            <Link
               href="/sitemap.xml"
               title="site map"
               className="underline underline-offset-4 hover:opacity-80"
             >
               Sitemap
-            </a>
+            </Link>
           </div>
         </footer>
       </div>
